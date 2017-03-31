@@ -6,19 +6,20 @@ class HashTable:
     def __init__(self, tablesize = 1000):
         self.tablesize = tablesize
         self.size = 0
-        self._keys =[]
-        self.data = [[] for _ in range(tablesize)]
+        self._keys =[] # Set of keys in the hash table
+        self.data = [[] for _ in range(tablesize)] #List of Lists (Chaining)
 
     def _find_by_key(self,key,find_result_func):
-        index = hash_function(key,self.tablesize)
-        hash_table_cell = self.data[index]
+        index = hash_function(key,self.tablesize) # Compute hash for the function
+        hash_table_cell = self.data[index] # Getting all lists availble at the computed hash index
         found_item = None
-        for item in hash_table_cell:
+        for item in hash_table_cell: #Looping through the chain formed at the index
             if item[0] == key:
                 found_item = item
                 break
         return find_result_func(found_item,hash_table_cell)
 
+    # Find the element place in the Hash Table
     def set(self,key,obj):
         def find_result_func(found_item,hash_table_cell):
             if found_item:
@@ -28,7 +29,8 @@ class HashTable:
                 self.size +=1
                 self._keys.append(key)
         self._find_by_key(key, find_result_func)
-
+    
+    # Get the given element from the Hash Table
     def get(self,key):
         def find_result_func(found_item,hash_table_cell):
             if found_item:
@@ -36,7 +38,8 @@ class HashTable:
             else:
                 raise KeyError(key)
         return self._find_by_key(key,find_result_func)
-
+    
+    # Get 
     def remove(self,key):
         def find_result_func(found_item,hash_table_cell):
             if found_item:
